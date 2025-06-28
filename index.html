@@ -504,6 +504,9 @@ function getStoredProfiles(key) {
     gender,
     photo
   };
+    saveProfile(newProfile, gender);
+  alert("Profile registered successfully!");
+  closeModal("registerModal");
 
   // ✅ POST to backend
   fetch("home.php", {
