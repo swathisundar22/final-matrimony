@@ -12,47 +12,89 @@
       background-size: cover;
       color: #333;
     }
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    }
-    nav .brand {
-      font-size: 2rem;
-      font-weight: bold;
-    }
-    nav .menu a {
-      margin-left: 1.5rem;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
+  nav {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+nav .brand {
+  font-size: 2rem;
+  font-weight: bold;
+  flex: 1 1 100%;
+  text-align: center;
+}
+
+nav .menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+nav .menu a {
+  margin: 0.5rem 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+nav .menu a:hover {
+  color: #fdd835;
+}
+
+@media (min-width: 600px) {
+  nav {
+    flex-wrap: nowrap;
+  }
+
+  nav .brand {
+    flex: initial;
+    text-align: left;
+  }
+
+  nav .menu {
+    width: auto;
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+
+  nav .menu a {
+    margin-left: 1.5rem;
+    margin-right: 0;
+  }
+}
+
     nav .menu a:hover {
       color: #fdd835;
     }
-    .hero {
-      text-align: center;
-      padding: 6rem 2rem 3rem;
-      background: rgba(255, 255, 255, 0.8);
-      margin: 2rem auto;
-      max-width: 800px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
+   .hero {
+  text-align: center;
+  padding: 6rem 2rem 3rem;
+  background: rgba(255, 255, 255, 0.1); /* Almost fully transparent */
+  margin: 2rem auto;
+  max-width: 800px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* lighter shadow */
+  backdrop-filter: blur(3px); /* Optional: slight blur behind */
+  color: #fff; /* Text stays readable */
+}
     .hero h1 {
       font-size: 3rem;
       color: #b71c1c;
     }
     .hero p {
       font-size: 1.25rem;
-      color: #555;
+      color: rgb(236, 20, 20);
+      font-weight: bolder;
     }
     .hero button {
       margin: 0.5rem;
@@ -155,17 +197,122 @@
     .modal-content button:hover {
       background-color: #b71c1c;
     }
+    /* Modal Overlay */
+/* Background Overlay */
+/* Background Overlay */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.auth-modal-content {
+  background: rgba(245, 236, 230, 0.96); /* warm beige background */
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 12px 40px rgba(90, 60, 30, 0.4);
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  color: #3b2f2f;
+}
+
+/* Header */
+.auth-modal-content h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #5a3e36;
+  margin-bottom: 1rem;
+}
+
+/* Input fields and dropdown */
+.auth-modal-content input,
+.auth-modal-content select {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #a78a7f;
+  font-size: 1rem;
+  background: #fff8f3;
+  color: #4b3a30;
+  transition: 0.2s ease-in-out;
+}
+
+.auth-modal-content input:focus,
+.auth-modal-content select:focus {
+  border-color: #8b5e3c;
+  background: #fffaf7;
+  outline: none;
+}
+
+/* Button */
+.auth-modal-content button {
+  padding: 0.8rem;
+  border: none;
+  background: linear-gradient(to right, #8b5e3c, #a97456);
+  color: white;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.auth-modal-content button:hover {
+  background: linear-gradient(to right, #a97456, #8b5e3c);
+  transform: scale(1.02);
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 24px;
+  color: #a97456;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.close:hover {
+  color: #5a3e36;
+  transform: scale(1.1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="brand">MyMatrimony</div>
-    <div class="menu">
-      <a onclick="openModal('loginModal')">Login</a>
-      <a onclick="openModal('registerModal')">Register</a>
-    </div>
-  </nav>
+ <nav>
+  <div class="brand">MyMatrimony</div>
+  <div class="menu">
+    <a href="#">Home</a>
+    <a onclick="openModal('loginModal')">Login</a>
+    <a onclick="openModal('registerModal')">Register</a>
+  </div>
+</nav>
 
   <div class="hero">
     <h1>Welcome to MyMatrimony</h1>
@@ -190,38 +337,39 @@
     </div>
   </div>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('loginModal')">&times;</span>
-      <h2>Login</h2>
-      <input type="text" id="loginUsername" placeholder="Username">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button onclick="handleLogin()">Login</button>
-    </div>
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="auth-modal-content">
+    <span class="close" onclick="closeModal('loginModal')">&times;</span>
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Username" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button onclick="handleLogin()">Login</button>
   </div>
+</div>
 
-  <!-- Register Modal -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('registerModal')">&times;</span>
-      <h2>Register</h2>
-      <input type="text" id="regName" placeholder="Full Name">
-      <input type="text" id="regEmail" placeholder="Email">
-      <input type="password" id="regPassword" placeholder="Password">
-      <input type="text" id="regProfession" placeholder="Profession">
-      <input type="text" id="regEducation" placeholder="Education">
-      <input type="text" id="regPhone" placeholder="Phone">
-      <input type="text" id="regOther" placeholder="Other Details">
-      <select id="regGender">
-        <option value="">Select Gender</option>
-        <option value="groom">Groom</option>
-        <option value="bride">Bride</option>
-      </select>
-      <input type="text" id="regPhoto" placeholder="Photo URL">
-      <button onclick="handleRegister()">Save</button>
-    </div>
+<!-- Register Modal -->
+<div id="registerModal" class="modal">
+  <div class="auth-modal-content">
+    <span class="close" onclick="closeModal('registerModal')">&times;</span>
+    <h2>Register</h2>
+    <input type="text" id="regName" placeholder="Full Name" />
+    <input type="text" id="regEmail" placeholder="Email" />
+    <input type="password" id="regPassword" placeholder="Password" />
+    <input type="text" id="regProfession" placeholder="Profession" />
+    <input type="text" id="regEducation" placeholder="Education" />
+    <input type="text" id="regPhone" placeholder="Phone" />
+    <input type="text" id="regOther" placeholder="Other Details" />
+    <select id="regGender">
+      <option value="">Select Gender</option>
+      <option value="groom">Groom</option>
+      <option value="bride">Bride</option>
+    </select>
+    <input type="text" id="regPhoto" placeholder="Photo URL" />
+    <button onclick="handleRegister()">Save</button>
   </div>
+</div>
+
 
   <script>
     const defaultGrooms = [
@@ -348,50 +496,50 @@
       closeModal('registerModal');
     }
   </script>
-  <footer style="background-color: #2c2c2c; color: #fff; padding: 3rem 2rem 2rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
-    <!-- Brand & Description -->
-    <div style="flex: 1 1 250px; margin-bottom: 1.5rem;">
-      <h2 style="color: #fdd835; font-size: 1.5rem; margin-bottom: 1rem;">MyMatrimony</h2>
-      <p style="color: #ccc;">MyMatrimony is a trusted matrimonial service designed for those seeking a lifelong marriage. This is not a dating website.</p>
-      <p style="margin-top: 1rem; font-size: 0.875rem; color: #888;">All profiles should reflect genuine marriage intentions.<br>Copyright © 2025 Kalyan Matrimony. All rights reserved.</p>
+  <footer style="background-color: rgba(0,0,0,0.85); color: white; padding: 2rem 2rem; margin-top: 4rem;">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; max-width: 1200px; margin: auto;">
+    
+    <!-- Brand -->
+    <div style="flex: 1 1 200px;">
+      <h2 style="color: #fdd835; margin-bottom: 0.5rem;">MyMatrimony</h2>
+      <p style="font-size: 0.95rem; line-height: 1.6;">
+        Kalyan Matrimony is a trusted matrimonial service designed for those seeking a lifelong marriage. This is not a dating website.<br>
+        All profiles should reflect genuine marriage intentions.<br>
+        &copy; 2025 Kalyan Matrimony. All rights reserved.
+      </p>
     </div>
 
-    <!-- Help & Support -->
-    <div style="flex: 1 1 150px; margin-bottom: 1.5rem;">
-      <h4 style="color: #fdd835; margin-bottom: 1rem;">Help & Support</h4>
-      <ul style="list-style: none; padding: 0; color: #ccc; font-size: 0.95rem;">
-        <li>Contact Us</li>
-        <li>Feedback</li>
-        <li>FAQs</li>
+    <!-- Help & Info -->
+    <div style="flex: 1 1 150px;">
+      <h3 style="color: #fdd835;">Help & Support</h3>
+      <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+        <li><a href="#" style="color: white; text-decoration: none;">Contact Us</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Feedback</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">FAQs</a></li>
       </ul>
     </div>
 
-    <!-- Information -->
-    <div style="flex: 1 1 200px; margin-bottom: 1.5rem;">
-      <h4 style="color: #fdd835; margin-bottom: 1rem;">Information</h4>
-      <ul style="list-style: none; padding: 0; color: #ccc; font-size: 0.95rem;">
-        <li>About Us</li>
-        <li>Buy Gold Scheme</li>
-        <li>Book Appointment for Jewellery</li>
-        <li>Terms & Conditions</li>
-        <li>Privacy Policy</li>
+    <div style="flex: 1 1 180px;">
+      <h3 style="color: #fdd835;">Information</h3>
+      <ul style="list-style: none; padding: 0; font-size: 0.9rem;">
+        <li><a href="#" style="color: white; text-decoration: none;">About Us</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Buy Gold Scheme</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Book Appointment for Jewellery</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Terms & Conditions</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Privacy Policy</a></li>
       </ul>
     </div>
 
-    <!-- Download App -->
-    <div style="flex: 1 1 200px; margin-bottom: 1.5rem;">
-      <h4 style="color: #fdd835; margin-bottom: 1rem;">Download App</h4>
-      <a href="#" style="display: inline-block; margin-bottom: 1rem;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style="width: 140px;">
-      </a>
-      <br>
-      <a href="#">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" style="width: 130px;">
-      </a>
+    <!-- Apps -->
+    <div style="flex: 1 1 180px;">
+      <h3 style="color: #fdd835;">Download App</h3>
+      <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" style="height: 40px; margin-bottom: 0.5rem;"></a><br>
+      <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style="height: 40px;"></a>
     </div>
+
   </div>
 </footer>
+
 
 </body>
 </html>
