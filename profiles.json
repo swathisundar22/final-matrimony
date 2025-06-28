@@ -1,0 +1,15 @@
+{
+    "groom": [
+        {
+            "name": "Vasu Dos",
+            "email": "vasu@gmail.com",
+            "profession": "Bank manager",
+            "education": "BCA",
+            "phone": "7538828006",
+            "other": "music",
+            "gender": "groom",
+            "photo": "https:\/\/tse1.mm.bing.net\/th\/id\/OIP.TunqLa_lSwlzTQO5ZcHchwHaQP?pid=Api&P=0&h=180"
+        }
+    ],
+    "bride": []
+}

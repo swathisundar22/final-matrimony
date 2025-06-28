@@ -390,112 +390,147 @@ nav .menu a:hover {
       { name: "Meera Iyer", profession: "HR Manager", education: "MBA", email: "meera@example.com", phone: "9879879876", other: "Gardener", photo: "https://up.yimg.com/ib/th/id/OIP.AsBHsrdLV_i3KXQYOWtQuAHaLG?pid=Api&rs=1&c=1&qlt=95&w=82&h=124" }
 
     ];
+function getStoredProfiles(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : [];
+  }
 
-    function getStoredProfiles(key) {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : [];
+  function saveProfile(profile, gender) {
+    const key = gender === 'groom' ? 'groomProfiles' : 'brideProfiles';
+    const existing = getStoredProfiles(key);
+    existing.push(profile);
+    localStorage.setItem(key, JSON.stringify(existing));
+  }
+
+  // 🆕 Fetch profiles from backend (home.php)
+  async function fetchProfilesFromServer(gender) {
+    try {
+      const response = await fetch(`home.php?gender=${gender}`);
+      if (!response.ok) throw new Error("Failed to fetch profiles");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching profiles:", error);
+      return [];
     }
+  }
 
-    function saveProfile(profile, gender) {
-      const key = gender === 'groom' ? 'groomProfiles' : 'brideProfiles';
-      const existing = getStoredProfiles(key);
-      existing.push(profile);
-      localStorage.setItem(key, JSON.stringify(existing));
-    }
+  let currentIndex = 0;
+  let currentGroup = [];
 
-    function getAllProfiles(gender) {
-      const stored = getStoredProfiles(gender === 'groom' ? 'groomProfiles' : 'brideProfiles');
-      return gender === 'groom' ? [...defaultGrooms, ...stored] : [...defaultBrides, ...stored];
-    }
+  // 🆕 Updated to combine backend + local profiles
+  async function showProfiles(type) {
+    const localProfiles = getStoredProfiles(type === 'groom' ? 'groomProfiles' : 'brideProfiles');
+    const serverProfiles = await fetchProfilesFromServer(type);
 
-    let currentIndex = 0;
-    let currentGroup = [];
+    currentGroup = [...serverProfiles, ...localProfiles];
+    currentIndex = 0;
 
-    function showProfiles(type) {
-      currentGroup = getAllProfiles(type);
-      currentIndex = 0;
+    if (currentGroup.length > 0) {
       displayProfile(currentGroup[currentIndex]);
       document.getElementById("profileCard").style.display = "block";
     }
+  }
 
-    function displayProfile(profile) {
-      document.getElementById("name").textContent = profile.name;
-      document.getElementById("profession").textContent = profile.profession;
-      document.getElementById("education").textContent = profile.education;
-      document.getElementById("email").textContent = profile.email;
-      document.getElementById("phone").textContent = profile.phone;
-      document.getElementById("other").textContent = profile.other;
-      document.getElementById("profilePhoto").src = profile.photo;
+  function displayProfile(profile) {
+    document.getElementById("name").textContent = profile.name;
+    document.getElementById("profession").textContent = profile.profession;
+    document.getElementById("education").textContent = profile.education;
+    document.getElementById("email").textContent = profile.email;
+    document.getElementById("phone").textContent = profile.phone;
+    document.getElementById("other").textContent = profile.other;
+    document.getElementById("profilePhoto").src = profile.photo;
+  }
+
+  function nextProfile() {
+    if (currentIndex < currentGroup.length - 1) {
+      currentIndex++;
+      displayProfile(currentGroup[currentIndex]);
     }
+  }
 
-    function nextProfile() {
-      if (currentIndex < currentGroup.length - 1) {
-        currentIndex++;
-        displayProfile(currentGroup[currentIndex]);
+  function prevProfile() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      displayProfile(currentGroup[currentIndex]);
+    }
+  }
+
+  function openModal(id) {
+    document.getElementById(id).style.display = "block";
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    const modals = ['loginModal', 'registerModal'];
+    modals.forEach(id => {
+      let modal = document.getElementById(id);
+      if (event.target == modal) {
+        modal.style.display = "none";
       }
-    }
+    });
+  };
 
-    function prevProfile() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        displayProfile(currentGroup[currentIndex]);
-      }
-    }
+  function handleLogin() {
+    closeModal('loginModal');
+    openModal('registerModal');
+  }
 
-    function openModal(id) {
-      document.getElementById(id).style.display = "block";
-    }
+  function handleRegister() {
+  const name = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const profession = document.getElementById("regProfession").value.trim();
+  const education = document.getElementById("regEducation").value.trim();
+  const phone = document.getElementById("regPhone").value.trim();
+  const other = document.getElementById("regOther").value.trim();
+  const gender = document.getElementById("regGender").value;
+  const photo = document.getElementById("regPhoto").value.trim();
 
-    function closeModal(id) {
-      document.getElementById(id).style.display = "none";
-    }
+  if (!name || !email || !profession || !education || !phone || !gender || !photo) {
+    alert("Please fill in all required fields.");
+    return;
+  }
 
-    window.onclick = function(event) {
-      const modals = ['loginModal', 'registerModal'];
-      modals.forEach(id => {
-        let modal = document.getElementById(id);
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      });
-    };
+  const newProfile = {
+    name,
+    email,
+    profession,
+    education,
+    phone,
+    other,
+    gender,
+    photo
+  };
 
-    function handleLogin() {
-      closeModal('loginModal');
-      openModal('registerModal');
-    }
-
-    function handleRegister() {
-      const name = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
-      const profession = document.getElementById("regProfession").value.trim();
-      const education = document.getElementById("regEducation").value.trim();
-      const phone = document.getElementById("regPhone").value.trim();
-      const other = document.getElementById("regOther").value.trim();
-      const gender = document.getElementById("regGender").value;
-      const photo = document.getElementById("regPhoto").value.trim();
-
-      if (!name || !email || !profession || !education || !phone || !gender || !photo) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      const newProfile = {
-        name,
-        email,
-        profession,
-        education,
-        phone,
-        other,
-        photo
-      };
-
-      saveProfile(newProfile, gender);
+  // ✅ POST to backend
+  fetch("home.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newProfile)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
       alert(`${gender.charAt(0).toUpperCase() + gender.slice(1)} profile saved.`);
-
-      closeModal('registerModal');
+    } else {
+      alert("Register failed");
+      console.error("Backend error:", data.error || data);
     }
-  </script>
+  })
+  .catch(error => {
+    alert("Error registering profile");
+    console.error("Network error:", error);
+  });
+
+  closeModal('registerModal');
+}
+
+</script>
   <footer style="background-color: rgba(0,0,0,0.85); color: white; padding: 2rem 2rem; margin-top: 4rem;">
   <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; max-width: 1200px; margin: auto;">
     

@@ -1,21 +1,29 @@
 <?php
 include "db.php";
 
-$name = $_POST['name'];
-$gender = $_POST['gender'];
-$profession = $_POST['profession'];
-$education = $_POST['education'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$hobbies = $_POST['hobbies'];
-$password = $_POST['password'];
+$data = json_decode(file_get_contents("php://input"), true);
 
-$sql = "INSERT INTO users (name, gender, profession, education, email, phone, hobbies, password)
-VALUES ('$name', '$gender', '$profession', '$education', '$email', '$phone', '$hobbies', '$password')";
+if (!$data) {
+    echo json_encode(["error" => "Invalid input"]);
+    exit;
+}
 
-if ($conn->query($sql) === TRUE) {
-    header("Location: home.php?gender=$gender");
+$stmt = $conn->prepare("INSERT INTO users (name, email, profession, education, phone, hobbies, gender, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param(
+    "ssssssss",
+    $data['name'],
+    $data['email'],
+    $data['profession'],
+    $data['education'],
+    $data['phone'],
+    $data['other'],
+    $data['gender'],
+    $data['photo']
+);
+
+if ($stmt->execute()) {
+    echo json_encode(["success" => true]);
 } else {
-    echo "Error: " . $conn->error;
+    echo json_encode(["error" => "Failed to register"]);
 }
 ?>

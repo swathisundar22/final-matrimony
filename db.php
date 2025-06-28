@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = ""; // your password
-$db = "matrimony";
+$db = "matrimony_new";
 
 $conn = new mysqli($host, $user, $pass, $db);
 
